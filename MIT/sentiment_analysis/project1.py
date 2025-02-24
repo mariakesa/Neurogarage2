@@ -392,9 +392,8 @@ def extract_bow_feature_vectors(reviews, indices_by_word, binarize=True):
         for word in word_list:
             if word not in indices_by_word: continue
             feature_matrix[i, indices_by_word[word]] += 1
-    #if binarize:
-        # Your code here
-        #raise NotImplementedError
+    if binarize:
+        feature_matrix = (feature_matrix > 0).astype(np.float64)
     return feature_matrix
 
 
