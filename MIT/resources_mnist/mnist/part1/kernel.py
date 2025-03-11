@@ -39,4 +39,11 @@ def rbf_kernel(X, Y, gamma):
             kernel_matrix - (n, m) Numpy array containing the kernel matrix
     """
     # YOUR CODE HERE
-    raise NotImplementedError
+    X_sq = np.sum(X**2, axis=1).reshape(-1, 1)  # Shape (n, 1)
+    Y_sq = np.sum(Y**2, axis=1).reshape(1, -1)  # Shape (1, m)
+    XY = X @ Y.T  # Shape (n, m), dot product
+
+    sq_dists = X_sq + Y_sq - 2 * XY  # Compute pairwise squared distances
+    kernel_matrix = np.exp(-gamma * sq_dists)  # Apply RBF function
+
+    return kernel_matrix
