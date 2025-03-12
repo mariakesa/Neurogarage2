@@ -1,0 +1,24 @@
+I am working on a neuroscience project called MouseHash, which combines Neuropixel probe data from the International Brain Laboratory (IBL) API with machine learning techniques to analyze neural activity.
+Project Overview:
+
+    Hashing Probe Locations
+        Fetch probe locations (MLAPDV coordinates) from the IBL API.
+        Compute t-SNE embeddings to represent spatial probe distributions.
+        Train a neural hashing model to assign probes into discrete hash buckets.
+
+    Embedding Neural Activity with CEBRA
+        Aggregate spike train data based on hashed probe locations.
+        Train a CEBRA model to extract a latent trajectory of neural activity.
+
+    Quantizing CEBRA Trajectories with Self-Organizing Maps (SOMs)
+        Train a SOM on the CEBRA latent space.
+        Identify clustered neural states and compare them with experimental phases.
+
+What I Need Help With Next:
+
+    Writing Python code to implement specific parts of the pipeline.
+    Optimizing t-SNE, neural hashing, or SOM parameters.
+    Visualizing CEBRA trajectories and SOM clusters.
+    Structuring data processing and storage efficiently.
+    
+The goal is to compress high-dimensional neural activity into discrete meaningful states and analyze circuit-level dynamics in an interpretable way.

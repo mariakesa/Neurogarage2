@@ -362,13 +362,14 @@ def bag_of_words(texts, remove_stopword=False):
         a dictionary that maps each word appearing in `texts` to a unique
         integer `index`.
     """
-    
+    remove_stopword=True
+    stopword = open(r'/home/maria/Neurogarage2/MIT/sentiment_analysis/stopwords.txt','r').read().split()
     indices_by_word = {}  # maps word to unique index
     for text in texts:
         word_list = extract_words(text)
         for word in word_list:
             if word in indices_by_word: continue
-            #if word in stopword: continue
+            if word in stopword: continue
             indices_by_word[word] = len(indices_by_word)
 
     return indices_by_word
@@ -386,6 +387,7 @@ def extract_bow_feature_vectors(reviews, indices_by_word, binarize=True):
         in the dictionary.
     """
     # Your code here
+    binarize=False
     feature_matrix = np.zeros([len(reviews), len(indices_by_word)], dtype=np.float64)
     for i, text in enumerate(reviews):
         word_list = extract_words(text)
