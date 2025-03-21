@@ -11,14 +11,14 @@ load_dotenv()
 openai.api_key = os.getenv("OPENAIKEY")
 
 # Load SCOTUS dataset
-data_path = "/home/maria/Downloads/archive(1)/all_opinions.csv"
+data_path = "/home/maria/Neurogarage2/scotusCebra/scotus_with_summaries_ordered_full.csv"
 df = pd.read_csv(data_path)
 
 # Extract texts (ensure non-null)
-texts = df["text"].fillna("")
+texts = df["summary"].fillna("")
 
 # OpenAI embedding model
-MODEL_NAME = "text-embedding-3-large"
+MODEL_NAME = "text-embedding-3-small"
 
 # Function to get OpenAI embeddings
 def get_embedding(text, model=MODEL_NAME):
@@ -52,7 +52,7 @@ for i in tqdm(range(0, len(texts), batch_size), desc="Fetching Embeddings"):
 embeddings_array = np.array(embeddings)
 
 # Save to .npy file
-output_path = "/home/maria/Downloads/scotus_embeddings.npy"
+output_path = "/home/maria/Downloads/scotus_embeddings_small.npy"
 np.save(output_path, embeddings_array)
 
 print(f"Embeddings saved at {output_path}, shape: {embeddings_array.shape}")

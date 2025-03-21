@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCOTUS UMAP 3D Visualization</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+
+    <div id="umap-plot" style="width: 100vw; height: 100vh;"></div>
+
+    <script>
+        async function loadUMAPData() {
+            const response = await fetch("scotus_umap_data.json");
+            const data = await response.json();
+
+            // Extract x, y, z, colors, and hover text
+            const clusters = [...new Set(data.map(d => d.cluster))];  // Unique cluster labels
+            const traces = clusters.map(cluster => {
+                const clusterData = data.filter(d => d.cluster === cluster);
+                
+                return {
+                    x: clusterData.map(d => d.x),
+                    y: clusterData.map(d => d.y),
+                    z: clusterData.map(d => d.z),
+                    text: clusterData.map(d => d.text_summary),
+                    mode: "markers",
+                    marker: {
+                        size: 4,
+                        line: { width: 0.5 },
+                        opacity: 0.8
+                    },
+                    type: "scatter3d",
+                    name: `Cluster ${cluster}`
+                };
+            });
+
+            // Define layout
+            const layout = {
+                title: "3D UMAP Visualization of SCOTUS Embeddings",
+                margin: { l: 0, r: 0, b: 0, t: 50 },
+                scene: {
+                    xaxis: { title: "UMAP1" },
+                    yaxis: { title: "UMAP2" },
+                    zaxis: { title: "UMAP3" }
+                }
+            };
+
+            // Render Plotly figure
+            Plotly.newPlot("umap-plot", traces, layout);
+        }
+
+        // Load and render the plot
+        loadUMAPData();
+    </script>
+
+</body>
+</html>
