@@ -35,7 +35,7 @@ def main():
     y_train = [y_train[i] for i in permutation]
 
     # Split dataset into batches
-    batch_size = 32
+    batch_size = 64
     train_batches = batchify_data(X_train, y_train, batch_size)
     dev_batches = batchify_data(X_dev, y_dev, batch_size)
     test_batches = batchify_data(X_test, y_test, batch_size)
@@ -46,7 +46,13 @@ def main():
               nn.Conv2d(1, 32, (3, 3)),
               nn.ReLU(),
               nn.MaxPool2d((2, 2)),
-            )
+              nn.Conv2d(32, 64, (3, 3)),
+              nn.ReLU(),
+              nn.MaxPool2d((2, 2)),
+              Flatten(),
+              nn.Linear(1600, 128),
+              nn.Dropout(0.5),
+              nn.Linear(128, 10))
     ##################################
 
     train_model(train_batches, dev_batches, model, nesterov=True)

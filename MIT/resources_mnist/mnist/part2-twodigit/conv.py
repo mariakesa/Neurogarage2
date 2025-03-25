@@ -7,7 +7,7 @@ import utils_multiMNIST as U
 path_to_data_dir = '../Datasets/'
 use_mini_dataset = True
 
-batch_size = 64
+batch_size = 50
 nb_classes = 10
 nb_epoch = 30
 num_classes = 10
@@ -19,9 +19,51 @@ class CNN(nn.Module):
 
     def __init__(self, input_dimension):
         super(CNN, self).__init__()
-        # TODO initialize model layers here
+        self.input_dimension=(42,28)
+        self.conv0=nn.Conv2d(1, 16, (5, 5))
+        self.relu0=nn.ReLU()
+        self.maxpool0=nn.MaxPool2d((2, 2))
+        self.conv1 = nn.Conv2d(1, 32, (3, 3))
+        self.relu1 = nn.ReLU()
+        self.maxpool1 = nn.MaxPool2d((2, 2))
+        self.conv2 = nn.Conv2d(32, 64, (3, 3))
+        self.relu2 = nn.ReLU()
+        self.maxpool2 = nn.MaxPool2d((2, 2))
+        self.conv3 = nn.Conv2d(64, 128, (1, 1))
+        self.relu3 = nn.ReLU()
+        self.maxpool3 = nn.MaxPool2d((1, 1))
+        self.flatten = Flatten()
+        self.linear1 = nn.Linear(5760, 256)
+        self.dropout = nn.Dropout(0.75)
+        self.relu3 = nn.ReLU()
+        self.linear10= nn.Linear(256, 128)
+        self.dropout = nn.Dropout(0.25)
+        self.relu4 = nn.ReLU()
+        self.decoder1 = nn.Linear(128, 10)
+        self.decoder2 = nn.Linear(128, 10)
 
     def forward(self, x):
+        out=self.conv0(x)
+        out=self.relu0(out)
+        out=self.maxpool0(out)
+        out = self.conv1(x)
+        out = self.relu1(out)
+        out = self.maxpool1(out)
+        out = self.conv2(out)
+        out = self.relu2(out)
+        out = self.maxpool2(out)
+        out = self.conv3(out)
+        out = self.relu3(out)
+        out = self.maxpool3(out)
+        out=self.flatten(out)
+        out = self.linear1(out)
+        out=self.dropout(out)
+        out = self.relu3(out)
+        out = self.linear10(out)
+        out = self.dropout(out)
+        self.relu4(out)
+        out_first_digit = self.decoder1(out)
+        out_second_digit = self.decoder2(out)
 
         # TODO use model layers to predict the two digits
 
