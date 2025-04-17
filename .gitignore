@@ -177,3 +177,7 @@ cython_debug/
 *.npy
 *.txt
 *.pkl
+
+/Amsterdam/data
+/Amsterdam/saved_models
+/data

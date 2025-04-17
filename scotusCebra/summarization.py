@@ -25,11 +25,11 @@ df = pd.read_csv(data_path)#.loc[:100]
 texts = df["text"].fillna("")
 
 # Load Legal-BERT model
-#tokenizer = BertTokenizer.from_pretrained("nlpaueb/legal-bert-base-uncased")
-#model = BertModel.from_pretrained("nlpaueb/legal-bert-base-uncased")
-tokenizer = AutoTokenizer.from_pretrained("answerdotai/ModernBERT-base")
+tokenizer = BertTokenizer.from_pretrained("nlpaueb/legal-bert-base-uncased")
+model = BertModel.from_pretrained("nlpaueb/legal-bert-base-uncased")
+#tokenizer = AutoTokenizer.from_pretrained("answerdotai/ModernBERT-base")
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-model = AutoModel.from_pretrained("answerdotai/ModernBERT-base").to(device)
+#model = AutoModel.from_pretrained("answerdotai/ModernBERT-base").to(device)
 print('BOOM!', device)
 model.eval()  # Set model to evaluation mode
 
