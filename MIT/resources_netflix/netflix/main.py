@@ -21,13 +21,24 @@ def run_K(X, k):
         common.plot(X, mixture, post, 
             title=f'Cluster size {k} and seed {s}')
     return min(costs)
-
+'''
 costs=[]
 for k in K:
     cost=run_K(X,k)
     costs.append(cost)
 
 print(costs)
+'''
+
+def run_em(X):
+    mixture, ____=common.init(X, 2, 0)
+    _, __ = naive_em.estep(X,mixture)
+    print(_,__)
+
+    naive_em.mstep(X,_)
+
+run_em(X)
+
 
 
 
