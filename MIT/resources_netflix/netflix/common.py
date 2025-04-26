@@ -61,13 +61,7 @@ def plot(X: np.ndarray, mixture: GaussianMixture, post: np.ndarray,
         theta = 0
         for j in range(K):
             offset = percent[i, j] * 360
-            arc = Arc(point,
-                      r,
-                      r,
-                      0,
-                      theta,
-                      theta + offset,
-                      edgecolor=color[j])
+            arc = Arc(point, r, r, angle=0, theta1=theta, theta2=theta + offset, edgecolor=color[j])
             ax.add_patch(arc)
             theta += offset
     for j in range(K):
@@ -85,17 +79,21 @@ def plot(X: np.ndarray, mixture: GaussianMixture, post: np.ndarray,
 def rmse(X, Y):
     return np.sqrt(np.mean((X - Y)**2))
 
-def bic(X: np.ndarray, mixture: GaussianMixture,
-        log_likelihood: float) -> float:
-    """Computes the Bayesian Information Criterion for a
-    mixture of gaussians
+def bic(X: np.ndarray, mixture: GaussianMixture, log_likelihood: float) -> float:
+    """Computes the Bayesian Information Criterion for a mixture of Gaussians.
 
     Args:
         X: (n, d) array holding the data
-        mixture: a mixture of spherical gaussian
-        log_likelihood: the log-likelihood of the data
+        mixture: a mixture of spherical Gaussians
+        log_likelihood: the log-likelihood of the data under the model
 
     Returns:
         float: the BIC for this mixture
     """
-    raise NotImplementedError
+    n, d = X.shape
+    m = mixture.mu.shape[0]
+
+    # Number of parameters: means (d*m), variances (1 per component), and mixing coeffs (m-1 independent)
+    k = m * d + m + (m - 1)
+    
+    return log_likelihood - (1/2)* k * np.log(n)

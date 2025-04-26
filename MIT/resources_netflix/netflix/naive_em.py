@@ -74,7 +74,7 @@ def estep(X: np.ndarray, mixture) -> Tuple[np.ndarray, float]:
     total_log_likelihood = np.sum(logsumexp_vals)
 
     return gamma, total_log_likelihood
-
+'''
 def estep(X: np.ndarray, mixture) -> Tuple[np.ndarray, float]:
     """E-step: Softly assigns each datapoint to a gaussian component
 
@@ -110,7 +110,7 @@ def estep(X: np.ndarray, mixture) -> Tuple[np.ndarray, float]:
 
     loglikelihood=np.sum(normalizers)
     return responsibilities, loglikelihood
-
+'''
 
 
 def mstep(X: np.ndarray, post: np.ndarray) -> GaussianMixture:
@@ -125,6 +125,7 @@ def mstep(X: np.ndarray, post: np.ndarray) -> GaussianMixture:
     Returns:
         GaussianMixture: the new gaussian mixture
     """
+
     s=X.T@post
     normalizer=np.sum(post,axis=0)
     mu=(s/normalizer).T
@@ -147,7 +148,7 @@ def mstep(X: np.ndarray, post: np.ndarray) -> GaussianMixture:
     p=np.sum(post, axis=0)/N
 
     return GaussianMixture(mu, sigma_sq_k, p)
-
+    
 
 
 
@@ -166,4 +167,15 @@ def run(X: np.ndarray, mixture: GaussianMixture,
             for all components for all examples
         float: log-likelihood of the current assignment
     """
-    raise NotImplementedError
+    ll_old = None
+    while True:
+        responsibilities, ll_new = estep(X, mixture)
+        mixture = mstep(X, responsibilities)
+
+        if ll_old is not None and (ll_new - ll_old) <= 1e-6 * abs(ll_new):
+            break
+        ll_old = ll_new
+
+    return mixture, responsibilities, ll_new
+        
+
